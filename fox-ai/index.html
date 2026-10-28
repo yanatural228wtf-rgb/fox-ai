@@ -16,6 +16,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
 
     <style>
@@ -3087,16 +3088,99 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
   .fox-mark .fox-eyes,.message.assistant:has(.typing) .message-avatar,.composer:focus-within::before,.fox-greeting{animation:none !important;}
 }
 
+
+/* =========================================================
+   FOX UI 3.0 — иконки Phosphor duotone и больше жизни
+========================================================== */
+.ph-duotone{font-size:18px;line-height:1;display:inline-block;flex:0 0 auto;vertical-align:middle;}
+.ph-duotone::before{color:var(--accent-2) !important;opacity:.55 !important;}
+.new-chat .ph-duotone{font-size:19px;}
+.nav-btn .ph-duotone{font-size:20px;}
+.avatar .ph-duotone{font-size:22px;}
+.icon-btn .ph-duotone{font-size:20px;}
+.message-avatar .ph-duotone{font-size:19px;}
+.message-actions .ph-duotone{font-size:16px;}
+.composer-tool .ph-duotone{font-size:20px;}
+.profile-large-avatar .ph-duotone{font-size:44px;}
+.command-icon .ph-duotone{font-size:17px;}
+.drawer-trigger .ph-duotone{font-size:21px;}
+.fox-scroll-bottom .ph-duotone{font-size:19px;}
+.fox-install-btn .ph-duotone{font-size:17px;}
+.chat-item .ph-duotone{font-size:16px;}
+.theme-check .ph-duotone{font-size:12px;}
+.send-btn .ph-duotone{font-size:20px;}
+.send-btn .ph-duotone::before,.message.user .message-avatar .ph-duotone::before,.avatar .ph-duotone::before{color:#fff !important;opacity:.3 !important;}
+.fox-greeting .ph-duotone{font-size:16px;}
+
+/* Цветные карточки-подсказки: у каждой свой оттенок */
+.suggestion{--card:255,176,32;position:relative;overflow:hidden;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease,background .25s ease !important;}
+.suggestion:nth-child(2){--card:167,139,250;}
+.suggestion:nth-child(3){--card:45,212,191;}
+.suggestion-icon{width:38px !important;height:38px !important;border-radius:12px !important;color:rgb(var(--card)) !important;
+  background:linear-gradient(135deg,rgba(var(--card),.24),rgba(var(--card),.08)) !important;box-shadow:inset 0 0 0 1px rgba(var(--card),.25);}
+.suggestion-icon .ph-duotone{font-size:21px;}
+.suggestion-icon .ph-duotone::before{color:rgb(var(--card)) !important;opacity:.45 !important;}
+.suggestion::after{content:"";position:absolute;inset:auto -30% -60% auto;width:160px;height:160px;border-radius:50%;
+  background:radial-gradient(circle,rgba(var(--card),.22),transparent 70%);opacity:0;transition:opacity .3s ease;pointer-events:none;}
+.suggestion:hover{border-color:rgba(var(--card),.35) !important;box-shadow:0 14px 40px rgba(var(--card),.12);
+  background:linear-gradient(145deg,rgba(var(--card),.10),rgba(255,255,255,.03)) !important;}
+.suggestion:hover::after{opacity:1;}
+
+/* Закатное сияние фона, медленно дрейфует */
+.ambient::before{background:radial-gradient(circle,rgba(var(--accent-rgb),1),transparent 65%) !important;opacity:.2 !important;animation:foxDriftA 26s ease-in-out infinite alternate !important;}
+.ambient::after{background:radial-gradient(circle,rgba(255,61,129,1),transparent 65%) !important;opacity:.11 !important;animation:foxDriftB 32s ease-in-out infinite alternate !important;}
+@keyframes foxDriftA{from{transform:translate(0,0) scale(1)}to{transform:translate(18vw,14vh) scale(1.25)}}
+@keyframes foxDriftB{from{transform:translate(0,0) scale(1.1)}to{transform:translate(-16vw,-12vh) scale(.9)}}
+
+/* Искры «лисьего огня» над приветствием */
+.welcome{position:relative;}
+.welcome::before{content:"";position:absolute;left:0;right:0;top:0;height:70%;pointer-events:none;z-index:0;opacity:.75;
+  background-image:
+    radial-gradient(2px 2px at 12% 78%,rgba(255,157,66,.95),transparent),
+    radial-gradient(1.5px 1.5px at 28% 40%,rgba(255,200,120,.9),transparent),
+    radial-gradient(2.5px 2.5px at 46% 88%,rgba(255,106,0,.9),transparent),
+    radial-gradient(1.5px 1.5px at 63% 22%,rgba(255,180,100,.85),transparent),
+    radial-gradient(2px 2px at 78% 66%,rgba(255,140,60,.9),transparent),
+    radial-gradient(1.5px 1.5px at 90% 34%,rgba(255,61,129,.7),transparent);
+  background-size:340px 340px;animation:foxEmbers 16s linear infinite;
+  -webkit-mask-image:radial-gradient(ellipse 50% 60% at 50% 45%,#000 20%,transparent 75%);mask-image:radial-gradient(ellipse 50% 60% at 50% 45%,#000 20%,transparent 75%);}
+.welcome > *{position:relative;z-index:1;}
+@keyframes foxEmbers{from{background-position:0 0}to{background-position:40px -340px}}
+
+/* Заголовок переливается закатом */
+.welcome h1 span{background:linear-gradient(90deg,var(--accent-2),#ff3d81,var(--accent),var(--accent-2)) !important;background-size:300% auto !important;
+  -webkit-background-clip:text !important;background-clip:text !important;color:transparent !important;}
+
+/* Сообщения */
+.message.user .bubble{background:linear-gradient(135deg,rgba(var(--accent-rgb),.36),rgba(255,61,129,.16)) !important;
+  border-color:rgba(var(--accent-rgb),.3) !important;box-shadow:0 10px 30px rgba(var(--accent-rgb),.12);}
+.message.assistant .bubble{background:linear-gradient(160deg,rgba(var(--accent-rgb),.075),rgba(255,255,255,.025) 45%) !important;}
+body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var(--accent-rgb),.08),rgba(255,255,255,.75) 45%) !important;}
+
+/* Активный пункт меню с акцентной полоской */
+.nav-btn.active{box-shadow:inset 3px 0 0 var(--accent);}
+.nav-btn.active .ph-duotone{color:var(--accent-2);}
+.chat-item.active{box-shadow:inset 2px 0 0 rgba(var(--accent-rgb),.8);}
+
+/* Кнопка отправки с бликом */
+.send-btn{position:relative;overflow:hidden;box-shadow:0 8px 24px rgba(var(--accent-rgb),.35);}
+.send-btn::after{content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);transform:skewX(-18deg);transition:left .6s ease;}
+.send-btn:hover::after{left:140%;}
+.send-btn:hover .ph-duotone{transform:translate(1px,-1px) rotate(-8deg);transition:transform .25s ease;}
+
+@media (prefers-reduced-motion:reduce){.ambient::before,.ambient::after,.welcome::before{animation:none !important;}}
+
 </style>
 </head>
 
 <body>
 
 <button class="drawer-trigger left" id="leftDrawerTrigger" onclick="toggleFoxLeftDrawer()" aria-label="Левая панель" title="Левая панель">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h8"/><path d="M4 12h16"/><path d="M4 18h10"/><circle cx="16" cy="6" r="2"/><circle cx="8" cy="18" r="2"/></svg>
+  <i class="ph-duotone ph-sliders-horizontal" aria-hidden="true"></i>
 </button>
 <button class="drawer-trigger right" id="rightDrawerTrigger" onclick="toggleFoxRightDrawer()" aria-label="Правая панель" title="Правая панель">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6h-8"/><path d="M20 12H4"/><path d="M20 18h-10"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="18" r="2"/></svg>
+  <i class="ph-duotone ph-sliders-horizontal" aria-hidden="true"></i>
 </button>
 
     <div class="ambient"></div>
@@ -3122,10 +3206,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
             </div>
 
             <button class="new-chat" onclick="createNewChat()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                    <path d="M12 5v14"/>
-                    <path d="M5 12h14"/>
-                </svg>
+                <i class="ph-duotone ph-plus-circle" aria-hidden="true"></i>
                 <span>Новый чат</span>
             </button>
 
@@ -3137,45 +3218,23 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
                 <div class="nav-list">
 
                     <button class="nav-btn active" id="navChat" onclick="activateWorkspace('chat')">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-                            <path d="M20 15a4 4 0 0 1-4 4H9l-5 3v-7a4 4 0 0 1-1-3V8a4 4 0 0 1 4-4h9a4 4 0 0 1 4 4v7Z"/>
-                        </svg>
+                        <i class="ph-duotone ph-chats-circle" aria-hidden="true"></i>
                         <span>Чаты</span>
                     </button>
 
                     <button class="nav-btn" id="navWeb" onclick="activateWorkspace('web')">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                            <circle cx="12" cy="12" r="9"/>
-                            <path d="M3 12h18"/>
-                            <path d="M12 3c3 3 3 15 0 18"/>
-                            <path d="M12 3c-3 3-3 15 0 18"/>
-                        </svg>
+                        <i class="ph-duotone ph-globe-hemisphere-west" aria-hidden="true"></i>
                         <span>Web Search</span>
                         <span class="nav-badge">WEB</span>
                     </button>
 
                     <button class="nav-btn" onclick="openCanvas()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M4 19.5V5a2 2 0 0 1 2-2h11"/>
-                            <path d="M7 21h11a2 2 0 0 0 2-2V7"/>
-                            <path d="M7 21a3 3 0 0 1 0-6h13"/>
-                            <path d="M17 3v4h4"/>
-                        </svg>
+                        <i class="ph-duotone ph-note-pencil" aria-hidden="true"></i>
                         <span>Canvas</span>
                     </button>
 
                     <button class="nav-btn" onclick="openTools()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-                            <path d="M12 2v4"/>
-                            <path d="M12 18v4"/>
-                            <path d="M4.93 4.93l2.83 2.83"/>
-                            <path d="m16.24 16.24 2.83 2.83"/>
-                            <path d="M2 12h4"/>
-                            <path d="M18 12h4"/>
-                            <path d="m4.93 19.07 2.83-2.83"/>
-                            <path d="m16.24 7.76 2.83-2.83"/>
-                            <circle cx="12" cy="12" r="4"/>
-                        </svg>
+                        <i class="ph-duotone ph-toolbox" aria-hidden="true"></i>
                         <span>Fox Tools</span>
                     </button>
 
@@ -3186,13 +3245,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
                 <div class="sidebar-title">
                     История
                     <button class="sidebar-menu-btn" onclick="clearChatHistory()" title="Очистить историю">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                            <path d="M4 7h16"/>
-                            <path d="M10 11v6"/>
-                            <path d="M14 11v6"/>
-                            <path d="M6 7l1 13h10l1-13"/>
-                            <path d="M9 7V4h6v3"/>
-                        </svg>
+                        <i class="ph-duotone ph-trash" aria-hidden="true"></i>
                     </button>
                 </div>
 
@@ -3214,9 +3267,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
                     </div>
 
                     <div class="sidebar-menu-btn">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="m9 18 6-6-6-6"/>
-                        </svg>
+                        <i class="ph-duotone ph-caret-right" aria-hidden="true"></i>
                     </div>
 
                 </button>
@@ -3235,11 +3286,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
                 <div class="top-left">
 
                     <button class="mobile-menu" onclick="toggleSidebar()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round">
-                            <path d="M4 6h16"/>
-                            <path d="M4 12h16"/>
-                            <path d="M4 18h16"/>
-                        </svg>
+                        <i class="ph-duotone ph-list" aria-hidden="true"></i>
                     </button>
 
                     <div class="page-title" id="pageTitle">Новый чат</div>
@@ -3254,33 +3301,20 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
                 <div class="top-actions">
 
                     <button class="fox-install-btn" id="installBtn" onclick="installFoxApp()" title="Установить приложение">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+                        <i class="ph-duotone ph-download-simple" aria-hidden="true"></i>
                         <span>Установить</span>
                     </button>
 
                     <button class="icon-btn" onclick="openCommandCenter()" title="Command Center">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                            <circle cx="12" cy="12" r="8"/>
-                            <circle cx="12" cy="12" r="3"/>
-                            <path d="M12 2v2"/>
-                            <path d="M12 20v2"/>
-                            <path d="M2 12h2"/>
-                            <path d="M20 12h2"/>
-                        </svg>
+                        <i class="ph-duotone ph-command" aria-hidden="true"></i>
                     </button>
 
                     <button class="icon-btn" onclick="openSettings()" title="Настройки">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-                            <circle cx="12" cy="12" r="3"/>
-                            <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.05.05-1.7 1.7-.05-.05a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V20h-2.4v-.2a1.7 1.7 0 0 0-1.03-1.56 1.7 1.7 0 0 0-1.88.34l-.05.05-1.7-1.7.05-.05A1.7 1.7 0 0 0 8.4 15a1.7 1.7 0 0 0-1.56-1.03H6v-2.4h.84A1.7 1.7 0 0 0 8.4 10a1.7 1.7 0 0 0-.34-1.88l-.05-.05 1.7-1.7.05.05a1.7 1.7 0 0 0 1.88.34 1.7 1.7 0 0 0 1.03-1.56V4h2.4v.2A1.7 1.7 0 0 0 16.1 5.76a1.7 1.7 0 0 0 1.88-.34l.05-.05 1.7 1.7-.05.05A1.7 1.7 0 0 0 19.34 9c.15.59.67 1 1.28 1H21v2.4h-.38A1.7 1.7 0 0 0 19.4 15Z"/>
-                        </svg>
+                        <i class="ph-duotone ph-gear-six" aria-hidden="true"></i>
                     </button>
 
                     <button class="icon-btn" onclick="openProfile()" title="Профиль">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                            <circle cx="12" cy="8" r="3"/>
-                            <path d="M5 20a7 7 0 0 1 14 0"/>
-                        </svg>
+                        <i class="ph-duotone ph-user-circle" aria-hidden="true"></i>
                     </button>
 
                 </div>
@@ -3317,11 +3351,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
 
                                     <button class="suggestion" onclick="quickPrompt('Придумай мне интересную идею для проекта, который я смогу сделать на Python.')">
                                         <div class="suggestion-icon">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                                <path d="M9 18h6"/>
-                                                <path d="M10 22h4"/>
-                                                <path d="M8.5 14.5A6 6 0 1 1 16 14c-.9.9-1.5 1.6-1.5 3h-5c0-1.4-.6-2.1-1-2.5Z"/>
-                                            </svg>
+                                            <i class="ph-duotone ph-lightbulb" aria-hidden="true"></i>
                                         </div>
 
                                         <div>
@@ -3332,11 +3362,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
 
                                     <button class="suggestion" onclick="quickPrompt('Помоги мне написать код и объясни его максимально понятно.')">
                                         <div class="suggestion-icon">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="m8 9-4 3 4 3"/>
-                                                <path d="m16 9 4 3-4 3"/>
-                                                <path d="m14 5-4 14"/>
-                                            </svg>
+                                            <i class="ph-duotone ph-code" aria-hidden="true"></i>
                                         </div>
 
                                         <div>
@@ -3347,11 +3373,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
 
                                     <button class="suggestion" onclick="quickPrompt('Расскажи мне один действительно интересный факт и объясни, почему это так.')">
                                         <div class="suggestion-icon">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                                <circle cx="12" cy="12" r="9"/>
-                                                <path d="M12 11v5"/>
-                                                <path d="M12 8h.01"/>
-                                            </svg>
+                                            <i class="ph-duotone ph-sparkle" aria-hidden="true"></i>
                                         </div>
 
                                         <div>
@@ -3367,10 +3389,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
                     </div>
 
                     <button class="fox-scroll-bottom" id="foxScrollBottom" onclick="scrollToBottom()" title="Прокрутить вниз" aria-label="Прокрутить вниз">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 5v14"/>
-                            <path d="m6 13 6 6 6-6"/>
-                        </svg>
+                        <i class="ph-duotone ph-arrow-down" aria-hidden="true"></i>
                     </button>
 
                     <div class="composer-zone">
@@ -3378,9 +3397,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
                         <div class="composer-wrap">
 
                             <div class="attached-file" id="attachedFile">
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                    <path d="m16.5 6.5-8 8a3 3 0 0 0 4.24 4.24l7-7A5 5 0 0 0 12.67 4.67l-7.5 7.5a7 7 0 1 0 9.9 9.9l6.36-6.36"/>
-                                </svg>
+                                <i class="ph-duotone ph-paperclip" aria-hidden="true" style="font-size:15px"></i>
 
                                 <span class="attached-file-name" id="attachedFileName"></span>
 
@@ -3394,23 +3411,11 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
                                 <div class="composer-tools">
 
                                     <button class="composer-tool" onclick="document.getElementById('fileInput').click()" title="Прикрепить файл">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-                                            <path d="m16.5 6.5-8 8a3 3 0 0 0 4.24 4.24l7-7A5 5 0 0 0 12.67 4.67l-7.5 7.5a7 7 0 1 0 9.9 9.9l6.36-6.36"/>
-                                        </svg>
+                                        <i class="ph-duotone ph-paperclip" aria-hidden="true"></i>
                                     </button>
 
                                     <button class="composer-tool" onclick="quickPrompt('/creative Сделай ответ более креативным и интересным.')" title="Creative">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                            <path d="M12 3v2"/>
-                                            <path d="M12 19v2"/>
-                                            <path d="m4.93 4.93 1.42 1.42"/>
-                                            <path d="m17.65 17.65 1.42 1.42"/>
-                                            <path d="M3 12h2"/>
-                                            <path d="M19 12h2"/>
-                                            <path d="m4.93 19.07 1.42-1.42"/>
-                                            <path d="m17.65 6.35 1.42-1.42"/>
-                                            <circle cx="12" cy="12" r="4"/>
-                                        </svg>
+                                        <i class="ph-duotone ph-magic-wand" aria-hidden="true"></i>
                                     </button>
 
                                 </div>
@@ -3423,10 +3428,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
 
                                 <button class="send-btn" id="sendBtn" onclick="sendMessage()">
 
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="m5 12 14-7-3 14-4-6-7-1Z"/>
-                                        <path d="m12 13 7-8"/>
-                                    </svg>
+                                    <i class="ph-duotone ph-paper-plane-tilt" aria-hidden="true"></i>
 
                                 </button>
 
@@ -3463,24 +3465,15 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
                             <div class="canvas-tools">
 
                                 <button class="icon-btn" onclick="newCanvas()" title="Новый Canvas">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                        <path d="M12 5v14"/>
-                                        <path d="M5 12h14"/>
-                                    </svg>
+                                    <i class="ph-duotone ph-file-plus" aria-hidden="true"></i>
                                 </button>
 
                                 <button class="icon-btn" onclick="copyCanvas()" title="Копировать">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                        <rect x="9" y="9" width="10" height="10" rx="2"/>
-                                        <path d="M15 9V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h4"/>
-                                    </svg>
+                                    <i class="ph-duotone ph-copy" aria-hidden="true"></i>
                                 </button>
 
                                 <button class="icon-btn" onclick="sendCanvasToChat()" title="Отправить в чат">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                        <path d="m5 12 14-7-3 14-4-6-7-1Z"/>
-                                        <path d="m12 13 7-8"/>
-                                    </svg>
+                                    <i class="ph-duotone ph-chat-teardrop-text" aria-hidden="true"></i>
                                 </button>
 
                             </div>
@@ -3504,9 +3497,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
                         <div class="panel-title">Command Panel</div>
 
                         <button class="icon-btn" onclick="toggleRightPanel()" title="Скрыть">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                <path d="m15 18-6-6 6-6"/>
-                            </svg>
+                            <i class="ph-duotone ph-caret-left" aria-hidden="true"></i>
                         </button>
                     </div>
 
@@ -3577,14 +3568,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
                                 <button class="command-item" onclick="quickPrompt('Составь мне понятный план изучения программирования.')">
 
                                     <div class="command-icon">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                            <path d="M8 6h13"/>
-                                            <path d="M8 12h13"/>
-                                            <path d="M8 18h13"/>
-                                            <path d="M3 6h.01"/>
-                                            <path d="M3 12h.01"/>
-                                            <path d="M3 18h.01"/>
-                                        </svg>
+                                        <i class="ph-duotone ph-list-checks" aria-hidden="true"></i>
                                     </div>
 
                                     <div class="command-copy">
@@ -3597,10 +3581,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
                                 <button class="command-item" onclick="openProfile()">
 
                                     <div class="command-icon">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                            <circle cx="12" cy="8" r="3"/>
-                                            <path d="M5 20a7 7 0 0 1 14 0"/>
-                                        </svg>
+                                        <i class="ph-duotone ph-user-circle" aria-hidden="true"></i>
                                     </div>
 
                                     <div class="command-copy">
@@ -3613,10 +3594,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
                                 <button class="command-item" onclick="openSettings()">
 
                                     <div class="command-icon">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                            <circle cx="12" cy="12" r="3"/>
-                                            <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.05.05-1.7 1.7-.05-.05a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V20h-2.4v-.2a1.7 1.7 0 0 0-1.03-1.56 1.7 1.7 0 0 0-1.88.34l-.05.05-1.7-1.7.05-.05A1.7 1.7 0 0 0 8.4 15a1.7 1.7 0 0 0-1.56-1.03H6v-2.4h.84A1.7 1.7 0 0 0 8.4 10a1.7 1.7 0 0 0-.34-1.88l-.05-.05 1.7-1.7.05.05a1.7 1.7 0 0 0 1.88.34 1.7 1.7 0 0 0 1.03-1.56V4h2.4v.2A1.7 1.7 0 0 0 16.1 5.76a1.7 1.7 0 0 0 1.88-.34l.05-.05 1.7 1.7-.05.05A1.7 1.7 0 0 0 19.34 9c.15.59.67 1 1.28 1H21v2.4h-.38A1.7 1.7 0 0 0 19.4 15Z"/>
-                                        </svg>
+                                        <i class="ph-duotone ph-gear-six" aria-hidden="true"></i>
                                     </div>
 
                                     <div class="command-copy">
@@ -3774,11 +3752,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
                     <div>
 
                         <label class="upload-btn">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                <path d="M12 3v12"/>
-                                <path d="m7 8 5-5 5 5"/>
-                                <path d="M5 21h14"/>
-                            </svg>
+                            <i class="ph-duotone ph-upload-simple" aria-hidden="true" style="font-size:14px"></i>
 
                             Выбрать аватар
 
@@ -3989,11 +3963,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
                     <button class="command-item" onclick="closeModal('commandModal'); quickPrompt('Придумай необычную идею для IT-проекта.')">
 
                         <div class="command-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                <path d="M9 18h6"/>
-                                <path d="M10 22h4"/>
-                                <path d="M8.5 14.5A6 6 0 1 1 16 14c-.9.9-1.5 1.6-1.5 3h-5c0-1.4-.6-2.1-1-2.5Z"/>
-                            </svg>
+                            <i class="ph-duotone ph-lightbulb" aria-hidden="true"></i>
                         </div>
 
                         <div class="command-copy">
@@ -4006,11 +3976,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
                     <button class="command-item" onclick="closeModal('commandModal'); activateWorkspace('web')">
 
                         <div class="command-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                <circle cx="12" cy="12" r="9"/>
-                                <path d="M3 12h18"/>
-                                <path d="M12 3c3 3 3 15 0 18"/>
-                            </svg>
+                            <i class="ph-duotone ph-globe-hemisphere-west" aria-hidden="true"></i>
                         </div>
 
                         <div class="command-copy">
@@ -4023,11 +3989,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
                     <button class="command-item" onclick="closeModal('commandModal'); openCanvas()">
 
                         <div class="command-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                <path d="M4 19.5V5a2 2 0 0 1 2-2h11"/>
-                                <path d="M7 21h11a2 2 0 0 0 2-2V7"/>
-                                <path d="M7 21a3 3 0 0 1 0-6h13"/>
-                            </svg>
+                            <i class="ph-duotone ph-note-pencil" aria-hidden="true"></i>
                         </div>
 
                         <div class="command-copy">
@@ -4040,10 +4002,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
                     <button class="command-item" onclick="closeModal('commandModal'); openSettings()">
 
                         <div class="command-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                <circle cx="12" cy="12" r="3"/>
-                                <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.05.05-1.7 1.7-.05-.05a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V20h-2.4v-.2a1.7 1.7 0 0 0-1.03-1.56 1.7 1.7 0 0 0-1.88.34l-.05.05-1.7-1.7.05-.05A1.7 1.7 0 0 0 8.4 15a1.7 1.7 0 0 0-1.56-1.03H6v-2.4h.84A1.7 1.7 0 0 0 8.4 10a1.7 1.7 0 0 0-.34-1.88l-.05-.05 1.7-1.7.05.05A1.7 1.7 0 0 0 11 6.66V4h2v2.66A1.7 1.7 0 0 0 14.03 8.22a1.7 1.7 0 0 0 1.88-.34l.05-.05 1.7 1.7-.05.05A1.7 1.7 0 0 0 17.26 11H20v2h-2.74A1.7 1.7 0 0 0 16 14.56Z"/>
-                            </svg>
+                            <i class="ph-duotone ph-gear-six" aria-hidden="true"></i>
                         </div>
 
                         <div class="command-copy">
@@ -4088,11 +4047,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
                     <button class="command-item" onclick="useTool('explain')">
 
                         <div class="command-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                <circle cx="12" cy="12" r="9"/>
-                                <path d="M12 16v-4"/>
-                                <path d="M12 8h.01"/>
-                            </svg>
+                            <i class="ph-duotone ph-chalkboard-teacher" aria-hidden="true"></i>
                         </div>
 
                         <div class="command-copy">
@@ -4105,11 +4060,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
                     <button class="command-item" onclick="useTool('code')">
 
                         <div class="command-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                <path d="m8 9-4 3 4 3"/>
-                                <path d="m16 9 4 3-4 3"/>
-                                <path d="m14 5-4 14"/>
-                            </svg>
+                            <i class="ph-duotone ph-code" aria-hidden="true"></i>
                         </div>
 
                         <div class="command-copy">
@@ -4122,11 +4073,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
                     <button class="command-item" onclick="useTool('idea')">
 
                         <div class="command-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                <path d="M9 18h6"/>
-                                <path d="M10 22h4"/>
-                                <path d="M8.5 14.5A6 6 0 1 1 16 14c-.9.9-1.5 1.6-1.5 3h-5c0-1.4-.6-2.1-1-2.5Z"/>
-                            </svg>
+                            <i class="ph-duotone ph-lightbulb-filament" aria-hidden="true"></i>
                         </div>
 
                         <div class="command-copy">
@@ -4261,29 +4208,15 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
         function icon(type) {
             const icons = {
                 copy: `
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                        <rect x="9" y="9" width="10" height="10" rx="2"/>
-                        <path d="M15 9V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h4"/>
-                    </svg>
+                    <i class="ph-duotone ph-copy" aria-hidden="true"></i>
                 `,
 
                 regenerate: `
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                        <path d="M20 11a8 8 0 0 0-14.9-3"/>
-                        <path d="M5 4v4h4"/>
-                        <path d="M4 13a8 8 0 0 0 14.9 3"/>
-                        <path d="M19 20v-4h-4"/>
-                    </svg>
+                    <i class="ph-duotone ph-arrows-clockwise" aria-hidden="true"></i>
                 `,
 
                 trash: `
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                        <path d="M4 7h16"/>
-                        <path d="M10 11v6"/>
-                        <path d="M14 11v6"/>
-                        <path d="M6 7l1 13h10l1-13"/>
-                        <path d="M9 7V4h6v3"/>
-                    </svg>
+                    <i class="ph-duotone ph-trash" aria-hidden="true"></i>
                 `
             };
 
@@ -4680,9 +4613,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
                         : "");
 
                 item.innerHTML = `
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                        <path d="M20 15a4 4 0 0 1-4 4H9l-5 3v-7a4 4 0 0 1-1-3V8a4 4 0 0 1 4-4h9a4 4 0 0 1 4 4v7Z"/>
-                    </svg>
+                    <i class="ph-duotone ph-chat-circle-text" aria-hidden="true" style="font-size:15px"></i>
 
                     <span class="chat-item-title">
                         ${escapeHtml(chat.title)}
@@ -4766,11 +4697,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
                         <button class="suggestion" onclick="quickPrompt('Придумай мне интересную идею для проекта, который я смогу сделать на Python.')">
 
                             <div class="suggestion-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                    <path d="M9 18h6"/>
-                                    <path d="M10 22h4"/>
-                                    <path d="M8.5 14.5A6 6 0 1 1 16 14c-.9.9-1.5 1.6-1.5 3h-5c0-1.4-.6-2.1-1-2.5Z"/>
-                                </svg>
+                                <i class="ph-duotone ph-lightbulb" aria-hidden="true"></i>
                             </div>
 
                             <div>
@@ -4783,11 +4710,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
                         <button class="suggestion" onclick="quickPrompt('Помоги мне написать код и объясни его максимально понятно.')">
 
                             <div class="suggestion-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                    <path d="m8 9-4 3 4 3"/>
-                                    <path d="m16 9 4 3-4 3"/>
-                                    <path d="m14 5-4 14"/>
-                                </svg>
+                                <i class="ph-duotone ph-code" aria-hidden="true"></i>
                             </div>
 
                             <div>
@@ -4800,11 +4723,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
                         <button class="suggestion" onclick="quickPrompt('Расскажи мне один действительно интересный факт и объясни, почему это так.')">
 
                             <div class="suggestion-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                    <circle cx="12" cy="12" r="9"/>
-                                    <path d="M12 11v5"/>
-                                    <path d="M12 8h.01"/>
-                                </svg>
+                                <i class="ph-duotone ph-sparkle" aria-hidden="true"></i>
                             </div>
 
                             <div>
@@ -4961,10 +4880,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
                         <svg class="fox-mark" viewBox="0 0 24 24" aria-hidden="true"><path class="fox-head" fill="currentColor" d="M2.6 2.4 8.4 7.3h7.2l5.8-4.9-.5 9.3L12 21.8l-8.9-10.1Z"/><path fill="#000" fill-opacity=".22" d="M4.7 5.4l2.5 2.3-2.2 1.9zM19.3 5.4l-2.5 2.3 2.2 1.9z"/><path fill="#000" fill-opacity=".1" d="M8.4 7.3h7.2l5.3 4.4-6.5 2.9L12 16.4l-2.4-1.8-6.5-2.9z"/><g class="fox-eyes" fill="#2b1406"><path d="M7.3 11.5c1.1-.8 2.3-.7 3.1.4-1.1.6-2.2.5-3.1-.4Z"/><path d="M16.7 11.5c-1.1-.8-2.3-.7-3.1.4 1.1.6 2.2.5 3.1-.4Z"/></g><path fill="#2b1406" d="M10.7 18.7h2.6L12 20.3z"/></svg>
                     `
                     : `
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                            <circle cx="12" cy="8" r="3"/>
-                            <path d="M5 20a7 7 0 0 1 14 0"/>
-                        </svg>
+                        <i class="ph-duotone ph-user" aria-hidden="true"></i>
                     `;
 
             const bubbleContent =
@@ -5998,9 +5914,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
                                     ${escapeHtml(theme.name)}
                                 </span>
 
-                                <span class="theme-check">
-                                    ✓
-                                </span>
+                                <span class="theme-check"><i class="ph-duotone ph-check"></i></span>
 
                             </div>
                         `;
@@ -6608,10 +6522,10 @@ function closeSidebar(){
             const h = new Date().getHours();
             const name = (typeof profile !== "undefined" && profile && profile.name) ? profile.name : "";
             const part =
-                h < 5  ? ["🌙", "Доброй ночи"] :
-                h < 12 ? ["☀️", "Доброе утро"] :
-                h < 18 ? ["🌤️", "Добрый день"] :
-                         ["🌆", "Добрый вечер"];
+                h < 5  ? ["ph-moon-stars", "Доброй ночи"] :
+                h < 12 ? ["ph-coffee", "Доброе утро"] :
+                h < 18 ? ["ph-sun", "Добрый день"] :
+                         ["ph-sun-horizon", "Добрый вечер"];
             const time = new Date().toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
             return { icon: part[0], text: part[1] + (name ? ", " + name : ""), time };
         }
@@ -6620,8 +6534,8 @@ function closeSidebar(){
             document.querySelectorAll("[data-greeting]").forEach((el) => {
                 const g = foxGreetingText();
                 el.innerHTML = "";
-                const icon = document.createElement("span");
-                icon.textContent = g.icon;
+                const icon = document.createElement("i");
+                icon.className = "ph-duotone " + g.icon;
                 const text = document.createElement("span");
                 text.textContent = g.text;
                 const clock = document.createElement("span");
