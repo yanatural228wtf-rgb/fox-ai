@@ -346,6 +346,8 @@ def ask_openai_compatible(messages, system):
         headers={
             "Content-Type": "application/json",
             "Authorization": f"Bearer {OPENAI_API_KEY or 'none'}",
+            # Cloudflare (Groq и др.) блокирует стандартный "Python-urllib" (ошибка 1010)
+            "User-Agent": "FoxAI/1.0",
         },
         method="POST",
     )
