@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "ai.fox.app",
+        "sha256_cert_fingerprints": ["43:22:02:FE:7A:CF:81:76:FD:FD:C2:C0:34:B0:59:19:A2:F9:AB:B0:F3:CE:5D:7E:23:B7:A8:BC:98:0D:7E:3A"]
+      }
+    }]
