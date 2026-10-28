@@ -1,0 +1,28 @@
+name: Save Android APK
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  save:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download files from the running server
+        run: |
+          set -e
+          mkdir -p fox-ai/android
+          curl -fsS --retry 5 --retry-delay 10 -o fox-ai/android/FoxAI.apk https://fox-ai-sr3b.onrender.com/api/android/relay/FoxAI.apk
+          curl -fsS --retry 5 --retry-delay 10 -o fox-ai/android/assetlinks.json https://fox-ai-sr3b.onrender.com/api/android/relay/assetlinks.json
+          echo "b4b84d78fffed21bc5a12494a534262a20369f7e8fd2db728da30c565b98db70  fox-ai/android/FoxAI.apk" | sha256sum -c -
+          echo "c7aeb9b55ebceeec740c58f739bba9fb3030730756382d1f8cd6f55e428f7a94  fox-ai/android/assetlinks.json" | sha256sum -c -
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add fox-ai/android
+          git commit -m "Android: APK и assetlinks" || echo "nothing to commit"
+          git push
