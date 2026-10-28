@@ -556,6 +556,50 @@ th{{color:#a1a1aa;font-weight:600;font-size:13px;background:#1b1b21}}tr:nth-chil
 
 
 # ---------------------------------------------------------------------------
+# Android-приложение (TWA): подтверждение домена и скачивание APK
+# ---------------------------------------------------------------------------
+
+ANDROID_PACKAGE = os.getenv("ANDROID_PACKAGE", "ai.fox.app").strip()
+ANDROID_SHA256 = os.getenv(
+    "ANDROID_SHA256",
+    "80:8D:DE:04:31:F9:9A:E3:B3:4B:BB:83:43:4D:C6:B0:EE:10:BB:2E:31:46:A2:0E:6E:86:C9:20:A2:CA:86:C6",
+).strip()
+
+
+def assetlinks():
+    data = [{
+        "relation": ["delegate_permission/common.handle_all_urls"],
+        "target": {"namespace": "android_app", "package_name": ANDROID_PACKAGE,
+                   "sha256_cert_fingerprints": [ANDROID_SHA256]},
+    }]
+    return Response(json.dumps(data), mimetype="application/json")
+
+
+def android_apk():
+    """Отдаёт APK из архива PWABuilder, лежащего в папке android/."""
+    import glob
+    import zipfile
+    folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), "android")
+    for path in sorted(glob.glob(os.path.join(folder, "*.zip"))) + sorted(glob.glob(os.path.join(folder, "*.apk"))):
+        try:
+            if path.endswith(".apk"):
+                body = open(path, "rb").read()
+            else:
+                with zipfile.ZipFile(path) as z:
+                    names = [n for n in z.namelist() if n.lower().endswith(".apk")]
+                    names.sort(key=lambda n: ("signed" not in n.lower(), len(n)))
+                    if not names:
+                        continue
+                    body = z.read(names[0])
+            stat("apk_downloads")
+            return Response(body, mimetype="application/vnd.android.package-archive", headers={
+                "Content-Disposition": 'attachment; filename="FoxAI.apk"', "Cache-Control": "no-cache"})
+        except Exception:  # noqa: BLE001
+            continue
+    return Response("APK ещё не готов.", 404)
+
+
+# ---------------------------------------------------------------------------
 # Регистрация
 # ---------------------------------------------------------------------------
 
@@ -570,6 +614,8 @@ def register(g):
     app.add_url_rule("/api/sync/pull", "sync_pull", sync_pull, methods=["POST"])
     app.add_url_rule("/api/sync/push", "sync_push", sync_push, methods=["POST"])
     app.add_url_rule("/stats", "stats_page", stats_page, methods=["GET"])
+    app.add_url_rule("/.well-known/assetlinks.json", "assetlinks", assetlinks, methods=["GET"])
+    app.add_url_rule("/download/android", "android_apk", android_apk, methods=["GET"])
 
     @app.before_request
     def _count_visit():
