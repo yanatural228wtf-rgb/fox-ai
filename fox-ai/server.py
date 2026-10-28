@@ -27,7 +27,7 @@ from collections import defaultdict, deque
 from pathlib import Path
 
 from dotenv import load_dotenv
-from flask import Flask, Response, jsonify, request, send_from_directory
+from flask import Flask, Response, jsonify, request, send_from_directory, stream_with_context
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 load_dotenv()
@@ -51,6 +51,16 @@ ACCESS_PASSWORD = os.getenv("ACCESS_PASSWORD", "").strip()
 MAX_MESSAGE_CHARS = int(os.getenv("MAX_MESSAGE_CHARS", "8000"))
 MAX_HISTORY_ITEM_CHARS = 6000
 PROVIDER_TIMEOUT = int(os.getenv("PROVIDER_TIMEOUT", "120"))
+
+# --- Модели -------------------------------------------------------------
+# Дополнительные модели для выбора в настройках (через запятую).
+_default_extra = "openai/gpt-oss-20b" if "groq.com" in OPENAI_BASE_URL else ""
+EXTRA_MODELS = [m.strip() for m in os.getenv("EXTRA_MODELS", _default_extra).split(",") if m.strip()]
+# Модель, которая понимает картинки (для Groq — qwen/qwen3.8-27b).
+_default_vision = "qwen/qwen3.8-27b" if "groq.com" in OPENAI_BASE_URL else ""
+VISION_MODEL = os.getenv("VISION_MODEL", _default_vision).strip()
+MAX_IMAGES = 3
+MAX_STREAM_CHARS = int(os.getenv("MAX_STREAM_CHARS", "70000"))
 
 if API_KEY:
     PROVIDER = "anthropic"
@@ -93,7 +103,7 @@ if PROVIDER == "anthropic":
     client = anthropic.Anthropic(api_key=API_KEY)
 
 app = Flask(__name__, static_folder=None)
-app.config["MAX_CONTENT_LENGTH"] = MAX_FILE_BYTES + 512 * 1024
+app.config["MAX_CONTENT_LENGTH"] = 14 * 1024 * 1024  # картинки в /api/stream
 
 # На хостинге приложение стоит за прокси — берём настоящий IP посетителя
 # из X-Forwarded-For (нужно для лимитов по IP).
@@ -511,6 +521,9 @@ def health():
         "demo": PROVIDER == "demo",
         "provider": PROVIDER,
         "model": MODEL,
+        "models": available_models(),
+        "vision": PROVIDER == "anthropic" or bool(VISION_MODEL) or PROVIDER == "demo",
+        "stream": True,
     })
 
 
@@ -591,9 +604,250 @@ def web_chat():
         return jsonify({"error": api_error_message(exc)}), 502
 
 
+# --------------------------------------------------------------------------
+# Потоковый ответ (текст печатается по мере генерации), выбор модели, картинки
+# --------------------------------------------------------------------------
+
+def available_models():
+    """Список моделей для выбора в настройках."""
+    if PROVIDER == "openai":
+        ids = [OPENAI_MODEL] + [m for m in EXTRA_MODELS if m != OPENAI_MODEL]
+    else:
+        ids = [MODEL]
+    out = []
+    for i, mid in enumerate(ids):
+        if i == 0:
+            label = "Умная"
+        elif "20b" in mid or "mini" in mid or "instant" in mid or "8b" in mid:
+            label = "Быстрая"
+        else:
+            label = mid.split("/")[-1]
+        out.append({"id": mid, "label": label})
+    return out
+
+
+def resolve_model(requested):
+    allowed = [m["id"] for m in available_models()]
+    return requested if requested in allowed else allowed[0]
+
+
+def _openai_open(payload):
+    """Открывает запрос к OpenAI-совместимому API, ошибки — в ProviderError."""
+    req = urllib.request.Request(
+        OPENAI_BASE_URL + "/chat/completions",
+        data=json.dumps(payload).encode("utf-8"),
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {OPENAI_API_KEY or 'none'}",
+            "User-Agent": "FoxAI/1.0",
+            "Accept": "text/event-stream",
+        },
+        method="POST",
+    )
+    try:
+        return urllib.request.urlopen(req, timeout=PROVIDER_TIMEOUT)
+    except urllib.error.HTTPError as exc:
+        body = exc.read().decode("utf-8", errors="replace")[:300]
+        if exc.code in (401, 403):
+            raise ProviderError(f"Провайдер отклонил запрос ({exc.code}). Проверь OPENAI_API_KEY.") from exc
+        if exc.code == 429:
+            raise ProviderError("Достигнут лимит бесплатных запросов. Подожди немного или попробуй позже.") from exc
+        if exc.code == 413:
+            raise ProviderError("Запрос слишком большой. Попробуй картинку поменьше или короче текст.") from exc
+        if exc.code in (400, 404):
+            raise ProviderError(f"Провайдер не принял запрос ({exc.code}): {body}") from exc
+        raise ProviderError(f"Ошибка провайдера ({exc.code}): {body}") from exc
+    except urllib.error.URLError as exc:
+        raise ProviderError(f"Не удалось подключиться к {OPENAI_BASE_URL}.") from exc
+    except TimeoutError as exc:
+        raise ProviderError("Провайдер слишком долго отвечает. Попробуй ещё раз.") from exc
+
+
+def stream_openai(messages, system, model):
+    payload = {
+        "model": model,
+        "max_tokens": MAX_TOKENS,
+        "stream": True,
+        "messages": [{"role": "system", "content": system}] + messages,
+    }
+    resp = _openai_open(payload)
+    try:
+        for raw in resp:
+            line = raw.decode("utf-8", errors="replace").strip()
+            if not line.startswith("data:"):
+                continue
+            data = line[5:].strip()
+            if data == "[DONE]":
+                break
+            try:
+                chunk = json.loads(data)
+            except json.JSONDecodeError:
+                continue
+            if chunk.get("error"):
+                raise ProviderError(str(chunk["error"].get("message", chunk["error"]))[:300])
+            choices = chunk.get("choices") or []
+            if not choices:
+                continue
+            delta = (choices[0].get("delta") or {}).get("content")
+            if delta:
+                yield delta
+    finally:
+        resp.close()
+
+
+def stream_anthropic(messages, system, model, web=False):
+    kwargs = dict(model=model, max_tokens=MAX_TOKENS, system=system, messages=messages)
+    if web:
+        kwargs["tools"] = [{"type": "web_search_20250305", "name": "web_search", "max_uses": 3}]
+    with client.messages.stream(**kwargs) as stream:
+        for text in stream.text_stream:
+            yield text
+
+
+def parse_images(raw):
+    """Принимает список data:image/...;base64 строк от фронта."""
+    if not isinstance(raw, list) or not raw:
+        return []
+    if len(raw) > MAX_IMAGES:
+        raise ValueError(f"Можно прикрепить не больше {MAX_IMAGES} картинок.")
+    images = []
+    for item in raw:
+        if not isinstance(item, str) or not item.startswith("data:image/") or ";base64," not in item:
+            raise ValueError("Картинка в неверном формате.")
+        if len(item) > 6 * 1024 * 1024:
+            raise ValueError("Картинка слишком большая.")
+        images.append(item)
+    return images
+
+
+def with_images(messages, images):
+    """Добавляет картинки к последнему сообщению пользователя."""
+    if not images:
+        return messages
+    last = messages[-1]
+    if PROVIDER == "anthropic":
+        parts = []
+        for url in images:
+            media, b64 = url[5:].split(";base64,", 1)
+            parts.append({"type": "image", "source": {"type": "base64", "media_type": media, "data": b64}})
+        parts.append({"type": "text", "text": last["content"]})
+    else:
+        parts = [{"type": "text", "text": last["content"]}]
+        parts += [{"type": "image_url", "image_url": {"url": url}} for url in images]
+    return messages[:-1] + [{"role": "user", "content": parts}]
+
+
+def _ndjson(obj):
+    return json.dumps(obj, ensure_ascii=False) + "\n"
+
+
+@app.post("/api/stream")
+def chat_stream():
+    data = request.get_json(silent=True) or {}
+    message = (data.get("message") or "").strip()
+    history = data.get("history") or []
+    mode = data.get("mode") or "normal"
+    web = bool(data.get("web"))
+
+    try:
+        images = parse_images(data.get("images"))
+    except ValueError as exc:
+        return jsonify({"error": str(exc)}), 400
+
+    if not message and not images:
+        return jsonify({"error": "Пустое сообщение."}), 400
+    if len(message) > MAX_STREAM_CHARS:
+        return jsonify({"error": f"Сообщение слишком длинное (максимум {MAX_STREAM_CHARS} символов вместе с файлом)."}), 400
+    if not message:
+        message = "Опиши, что на картинке."
+
+    if PROVIDER == "demo":
+        demo = demo_answer(message, web=web)
+
+        def demo_gen():
+            if demo["results"]:
+                yield _ndjson({"sources": demo["results"]})
+            for word in demo["answer"].split(" "):
+                yield _ndjson({"d": word + " "})
+                time.sleep(0.02)
+            yield _ndjson({"done": True, "model": "demo"})
+
+        return Response(stream_with_context(demo_gen()), mimetype="application/x-ndjson",
+                        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
+
+    if rate_limited():
+        return rate_limit_response()
+
+    if images and PROVIDER == "openai" and not VISION_MODEL:
+        return jsonify({"error": "Картинки не поддерживаются: не задана VISION_MODEL."}), 400
+
+    model = resolve_model(data.get("model"))
+    if images and PROVIDER == "openai":
+        model = VISION_MODEL
+
+    system = SYSTEM_WEB if web else (SYSTEM_CREATIVE if mode == "creative" else SYSTEM_BASE)
+    messages = build_messages(history, message)
+
+    results = []
+    if web and PROVIDER == "openai":
+        try:
+            results = web_search(message)
+        except ProviderError as exc:
+            app.logger.warning("web search failed: %s", exc)
+        if results:
+            context = "\n".join(
+                f"[{i}] {r['title']} — {r['snippet']} ({r['url']})" for i, r in enumerate(results, 1)
+            )
+            messages[-1] = {
+                "role": "user",
+                "content": (
+                    f"Результаты веб-поиска:\n{context}\n\nВопрос пользователя: {messages[-1]['content']}\n\n"
+                    "Ответь, опираясь на эти результаты, и ссылайся на источники по номерам [1], [2]."
+                ),
+            }
+
+    messages = with_images(messages, images)
+
+    def gen():
+        if results:
+            yield _ndjson({"sources": results})
+        got = False
+        try:
+            source = (stream_openai(messages, system, model) if PROVIDER == "openai"
+                      else stream_anthropic(messages, system, model, web=web))
+            for piece in source:
+                got = True
+                yield _ndjson({"d": piece})
+            if not got:
+                yield _ndjson({"d": "Модель вернула пустой ответ. Попробуй переформулировать вопрос."})
+            yield _ndjson({"done": True, "model": model})
+        except Exception as exc:  # noqa: BLE001
+            log_error(exc, "stream failed")
+            yield _ndjson({"error": api_error_message(exc)})
+
+    return Response(stream_with_context(gen()), mimetype="application/x-ndjson",
+                    headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
+
+
+@app.get("/fox-extra.js")
+def fox_extra_js():
+    resp = send_from_directory(BASE_DIR, "fox-extra.js")
+    resp.headers["Content-Type"] = "application/javascript; charset=utf-8"
+    resp.headers["Cache-Control"] = "no-cache"
+    return resp
+
+
+@app.get("/fox-extra.css")
+def fox_extra_css():
+    resp = send_from_directory(BASE_DIR, "fox-extra.css")
+    resp.headers["Content-Type"] = "text/css; charset=utf-8"
+    resp.headers["Cache-Control"] = "no-cache"
+    return resp
+
+
 @app.errorhandler(413)
 def too_large(_):
-    return jsonify({"error": "Файл слишком большой. Максимум 2 МБ."}), 413
+    return jsonify({"error": "Слишком большой запрос. Файл — до 2 МБ, картинки — поменьше."}), 413
 
 
 if __name__ == "__main__":

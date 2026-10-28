@@ -1,0 +1,126 @@
+/* =========================================================
+   Fox AI — стили расширений
+   • без белых обводок: глубина через фон и тени
+   • сплошные (fill) иконки
+   • блоки кода, голос, модели, вложения
+========================================================== */
+
+/* ---------- Без белых рамок (тёмная тема) ---------- */
+body:not(.light){
+  --border: transparent;
+  --border-strong: transparent;
+  --fox-surface: rgba(255,255,255,.035);
+  --fox-surface-2: rgba(255,255,255,.055);
+  --fox-shadow: 0 10px 30px rgba(0,0,0,.28);
+}
+body:not(.light) .brand-logo{box-shadow:0 10px 30px rgba(var(--accent-rgb),.28) !important;}
+body:not(.light) .welcome-logo{box-shadow:0 22px 70px rgba(var(--accent-rgb),.3) !important;animation:welcomeFloat 5s ease-in-out infinite !important;}
+body:not(.light) .avatar{box-shadow:0 6px 18px rgba(var(--accent-rgb),.18) !important;}
+body:not(.light) .code-wrap pre,
+body:not(.light) .edit-avatar,
+body:not(.light) .theme-preview{border-color:transparent !important;}
+body:not(.light) .panel-stat,
+body:not(.light) .profile-info-item,
+body:not(.light) .setting-row,
+body:not(.light) .theme-preview-sidebar{border-color:rgba(0,0,0,.25) !important;}
+body:not(.light) .sidebar{box-shadow:12px 0 40px rgba(0,0,0,.25);}
+body:not(.light) .topbar{box-shadow:0 10px 30px rgba(0,0,0,.18);}
+body:not(.light) .composer-zone{border-top-color:transparent !important;}
+body:not(.light) .composer{background:linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.03)) !important;box-shadow:0 18px 50px rgba(0,0,0,.35) !important;}
+body:not(.light) .suggestion,
+body:not(.light) .source-card,
+body:not(.light) .panel-card,
+body:not(.light) .theme-card,
+body:not(.light) .profile-stat-card,
+body:not(.light) .profile-about,
+body:not(.light) .profile-info-list,
+body:not(.light) .fox-language-row{background:var(--fox-surface-2) !important;box-shadow:var(--fox-shadow);}
+body:not(.light) .modal{box-shadow:0 40px 120px rgba(0,0,0,.6) !important;}
+body:not(.light) .toast{box-shadow:0 18px 50px rgba(0,0,0,.45) !important;}
+body:not(.light) .drawer-trigger,
+body:not(.light) .fox-scroll-bottom{background:#1a1a20 !important;box-shadow:0 10px 28px rgba(0,0,0,.4) !important;}
+body:not(.light) .text-input,
+body:not(.light) .text-area,
+body:not(.light) .fox-language-select{background:rgba(255,255,255,.05) !important;}
+body:not(.light) .text-input:focus,
+body:not(.light) .text-area:focus{box-shadow:0 0 0 2px rgba(var(--accent-rgb),.45) !important;}
+body:not(.light) .message.assistant .bubble{box-shadow:0 12px 34px rgba(0,0,0,.22) !important;}
+body:not(.light) .message.user .bubble{border-color:transparent !important;}
+body:not(.light) .typing{background:var(--fox-surface-2);}
+.suggestion-icon{box-shadow:none !important;}
+.fox-greeting{border-color:transparent !important;background:rgba(var(--accent-rgb),.13) !important;}
+.fox-mark{filter:none !important;}
+
+/* ---------- Сплошные иконки ---------- */
+.ph-fill{font-size:18px;line-height:1;display:inline-block;flex:0 0 auto;vertical-align:middle;}
+.icon-btn .ph-fill,.composer-tool .ph-fill,.message-actions .ph-fill{color:var(--text-faint,rgba(255,255,255,.55));transition:color .2s ease,transform .2s ease;}
+.icon-btn:hover .ph-fill,.composer-tool:hover .ph-fill,.message-actions button:hover .ph-fill{color:var(--accent-2);}
+.nav-btn .ph-fill{color:var(--text-faint,rgba(255,255,255,.5));}
+.nav-btn:hover .ph-fill,.nav-btn.active .ph-fill{color:var(--accent-2);}
+.new-chat .ph-fill{color:var(--accent-2);}
+.chat-item .ph-fill{color:rgba(var(--accent-rgb),.55);}
+.suggestion-icon .ph-fill{color:rgb(var(--card)) !important;}
+.send-btn .ph-fill{color:#fff;}
+.avatar .ph-fill,.message.user .message-avatar .ph-fill{color:rgba(255,255,255,.92);}
+.message-actions .ph-fill{font-size:16px;}
+
+/* ---------- Блоки кода ---------- */
+.fox-code{margin:12px 0;border-radius:14px;overflow:hidden;background:#0f1016;box-shadow:0 12px 30px rgba(0,0,0,.35);}
+.fox-code .code-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 10px 8px 14px;
+  background:linear-gradient(90deg,rgba(var(--accent-rgb),.16),rgba(255,255,255,.02));}
+.fox-code .code-lang{display:inline-flex;align-items:center;gap:7px;font:600 12px var(--font-mono,monospace);color:var(--accent-2);text-transform:lowercase;}
+.fox-code .code-lang .ph-fill{font-size:14px;}
+.fox-copy-code{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:8px;background:rgba(255,255,255,.06);
+  color:var(--text-soft,#ccc);font-size:12px;font-weight:600;cursor:pointer;transition:background .2s ease,color .2s ease;}
+.fox-copy-code:hover{background:rgba(var(--accent-rgb),.22);color:#fff;}
+.fox-copy-code.done{background:rgba(52,211,153,.18);color:#6ee7b7;}
+.fox-copy-code .ph-fill{font-size:14px;}
+.fox-code pre{margin:0 !important;border:0 !important;border-radius:0 !important;background:transparent !important;padding:14px 16px !important;overflow-x:auto;}
+.fox-code pre code,.fox-code pre code.hljs{background:transparent !important;padding:0 !important;font-size:13px;line-height:1.6;}
+
+/* ---------- Печатающийся ответ ---------- */
+.fox-caret{display:inline-block;width:8px;height:1.05em;margin-left:2px;vertical-align:-2px;border-radius:2px;
+  background:linear-gradient(180deg,var(--accent-2),var(--accent));animation:foxCaret 1s steps(2) infinite;}
+@keyframes foxCaret{50%{opacity:0}}
+.bubble.streaming > p:nth-last-child(2){display:inline;}
+.message.is-streaming .message-actions{opacity:.35;pointer-events:none;}
+
+/* ---------- Голос ---------- */
+.fox-mic.recording{background:rgba(239,68,68,.16) !important;}
+.fox-mic.recording .ph-fill{color:#f87171 !important;animation:foxRec 1.2s ease-in-out infinite;}
+@keyframes foxRec{50%{transform:scale(1.18)}}
+.fox-speak.active .ph-fill{color:var(--accent-2) !important;}
+
+/* ---------- Модель ---------- */
+.fox-model-chip{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 10px;margin-left:2px;border-radius:999px;
+  background:rgba(var(--accent-rgb),.12);color:var(--accent-2);font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .2s ease;}
+.fox-model-chip:hover{background:rgba(var(--accent-rgb),.22);}
+.fox-model-chip .ph-fill{font-size:15px;}
+.fox-model-chip[hidden]{display:none;}
+.fox-seg{display:inline-flex;gap:4px;padding:4px;border-radius:12px;background:rgba(255,255,255,.05);flex:0 0 auto;}
+body.light .fox-seg{background:rgba(0,0,0,.05);}
+.fox-seg button{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:9px;font-size:12px;font-weight:700;color:var(--text-soft);cursor:pointer;}
+.fox-seg button.active{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;box-shadow:0 6px 18px rgba(var(--accent-rgb),.35);}
+.fox-seg button .ph-fill{font-size:14px;}
+.fox-model-row{gap:14px;}
+
+/* ---------- Вложения ---------- */
+#attachedFileName{display:flex;flex-wrap:wrap;gap:6px;}
+.fox-att{display:inline-flex;align-items:center;gap:6px;max-width:220px;padding:3px 8px 3px 3px;border-radius:9px;background:rgba(var(--accent-rgb),.1);}
+.fox-att span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.fox-att img{width:26px;height:26px;border-radius:6px;object-fit:cover;}
+.fox-att .ph-fill{font-size:16px;margin-left:4px;color:var(--accent-2);}
+#attachedFile button .ph-fill{font-size:14px;}
+.fox-thumbs{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px;margin-top:8px;}
+.fox-thumbs img{width:120px;height:120px;object-fit:cover;border-radius:14px;box-shadow:0 10px 26px rgba(0,0,0,.35);}
+
+@media (max-width:560px){
+  .fox-model-chip span{display:none;}
+  .fox-model-chip{padding:0 9px;}
+  .fox-thumbs img{width:90px;height:90px;}
+  .fox-model-row{flex-wrap:wrap;}
+  .composer-tools{gap:0 !important;}
+  .composer-tool{width:34px !important;height:34px !important;}
+  .fox-model-chip{height:28px;margin-left:0;}
+}
+@media (prefers-reduced-motion:reduce){.fox-caret,.fox-mic.recording .ph-fill{animation:none;}}

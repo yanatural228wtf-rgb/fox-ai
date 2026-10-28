@@ -16,7 +16,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
 
     <style>
@@ -3092,25 +3092,23 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
 /* =========================================================
    FOX UI 3.0 — иконки Phosphor duotone и больше жизни
 ========================================================== */
-.ph-duotone{font-size:18px;line-height:1;display:inline-block;flex:0 0 auto;vertical-align:middle;}
-.ph-duotone::before{color:var(--accent-2) !important;opacity:.55 !important;}
-.new-chat .ph-duotone{font-size:19px;}
-.nav-btn .ph-duotone{font-size:20px;}
-.avatar .ph-duotone{font-size:22px;}
-.icon-btn .ph-duotone{font-size:20px;}
-.message-avatar .ph-duotone{font-size:19px;}
-.message-actions .ph-duotone{font-size:16px;}
-.composer-tool .ph-duotone{font-size:20px;}
-.profile-large-avatar .ph-duotone{font-size:44px;}
-.command-icon .ph-duotone{font-size:17px;}
-.drawer-trigger .ph-duotone{font-size:21px;}
-.fox-scroll-bottom .ph-duotone{font-size:19px;}
-.fox-install-btn .ph-duotone{font-size:17px;}
-.chat-item .ph-duotone{font-size:16px;}
-.theme-check .ph-duotone{font-size:12px;}
-.send-btn .ph-duotone{font-size:20px;}
-.send-btn .ph-duotone::before,.message.user .message-avatar .ph-duotone::before,.avatar .ph-duotone::before{color:#fff !important;opacity:.3 !important;}
-.fox-greeting .ph-duotone{font-size:16px;}
+.ph-fill{font-size:18px;line-height:1;display:inline-block;flex:0 0 auto;vertical-align:middle;}
+.new-chat .ph-fill{font-size:19px;}
+.nav-btn .ph-fill{font-size:20px;}
+.avatar .ph-fill{font-size:22px;}
+.icon-btn .ph-fill{font-size:20px;}
+.message-avatar .ph-fill{font-size:19px;}
+.message-actions .ph-fill{font-size:16px;}
+.composer-tool .ph-fill{font-size:20px;}
+.profile-large-avatar .ph-fill{font-size:44px;}
+.command-icon .ph-fill{font-size:17px;}
+.drawer-trigger .ph-fill{font-size:21px;}
+.fox-scroll-bottom .ph-fill{font-size:19px;}
+.fox-install-btn .ph-fill{font-size:17px;}
+.chat-item .ph-fill{font-size:16px;}
+.theme-check .ph-fill{font-size:12px;}
+.send-btn .ph-fill{font-size:20px;}
+.fox-greeting .ph-fill{font-size:16px;}
 
 /* Цветные карточки-подсказки: у каждой свой оттенок */
 .suggestion{--card:255,176,32;position:relative;overflow:hidden;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease,background .25s ease !important;}
@@ -3118,8 +3116,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:214748
 .suggestion:nth-child(3){--card:45,212,191;}
 .suggestion-icon{width:38px !important;height:38px !important;border-radius:12px !important;color:rgb(var(--card)) !important;
   background:linear-gradient(135deg,rgba(var(--card),.24),rgba(var(--card),.08)) !important;box-shadow:inset 0 0 0 1px rgba(var(--card),.25);}
-.suggestion-icon .ph-duotone{font-size:21px;}
-.suggestion-icon .ph-duotone::before{color:rgb(var(--card)) !important;opacity:.45 !important;}
+.suggestion-icon .ph-fill{font-size:21px;}
 .suggestion::after{content:"";position:absolute;inset:auto -30% -60% auto;width:160px;height:160px;border-radius:50%;
   background:radial-gradient(circle,rgba(var(--card),.22),transparent 70%);opacity:0;transition:opacity .3s ease;pointer-events:none;}
 .suggestion:hover{border-color:rgba(var(--card),.35) !important;box-shadow:0 14px 40px rgba(var(--card),.12);
@@ -3159,7 +3156,7 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
 
 /* Активный пункт меню с акцентной полоской */
 .nav-btn.active{box-shadow:inset 3px 0 0 var(--accent);}
-.nav-btn.active .ph-duotone{color:var(--accent-2);}
+.nav-btn.active .ph-fill{color:var(--accent-2);}
 .chat-item.active{box-shadow:inset 2px 0 0 rgba(var(--accent-rgb),.8);}
 
 /* Кнопка отправки с бликом */
@@ -3167,20 +3164,22 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
 .send-btn::after{content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;
   background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);transform:skewX(-18deg);transition:left .6s ease;}
 .send-btn:hover::after{left:140%;}
-.send-btn:hover .ph-duotone{transform:translate(1px,-1px) rotate(-8deg);transition:transform .25s ease;}
+.send-btn:hover .ph-fill{transform:translate(1px,-1px) rotate(-8deg);transition:transform .25s ease;}
 
 @media (prefers-reduced-motion:reduce){.ambient::before,.ambient::after,.welcome::before{animation:none !important;}}
 
 </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <link rel="stylesheet" href="/fox-extra.css">
 </head>
 
 <body>
 
 <button class="drawer-trigger left" id="leftDrawerTrigger" onclick="toggleFoxLeftDrawer()" aria-label="Левая панель" title="Левая панель">
-  <i class="ph-duotone ph-sliders-horizontal" aria-hidden="true"></i>
+  <i class="ph-fill ph-sliders-horizontal" aria-hidden="true"></i>
 </button>
 <button class="drawer-trigger right" id="rightDrawerTrigger" onclick="toggleFoxRightDrawer()" aria-label="Правая панель" title="Правая панель">
-  <i class="ph-duotone ph-sliders-horizontal" aria-hidden="true"></i>
+  <i class="ph-fill ph-sliders-horizontal" aria-hidden="true"></i>
 </button>
 
     <div class="ambient"></div>
@@ -3206,7 +3205,7 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
             </div>
 
             <button class="new-chat" onclick="createNewChat()">
-                <i class="ph-duotone ph-plus-circle" aria-hidden="true"></i>
+                <i class="ph-fill ph-plus-circle" aria-hidden="true"></i>
                 <span>Новый чат</span>
             </button>
 
@@ -3218,23 +3217,23 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
                 <div class="nav-list">
 
                     <button class="nav-btn active" id="navChat" onclick="activateWorkspace('chat')">
-                        <i class="ph-duotone ph-chats-circle" aria-hidden="true"></i>
+                        <i class="ph-fill ph-chats-circle" aria-hidden="true"></i>
                         <span>Чаты</span>
                     </button>
 
                     <button class="nav-btn" id="navWeb" onclick="activateWorkspace('web')">
-                        <i class="ph-duotone ph-globe-hemisphere-west" aria-hidden="true"></i>
+                        <i class="ph-fill ph-globe-hemisphere-west" aria-hidden="true"></i>
                         <span>Web Search</span>
                         <span class="nav-badge">WEB</span>
                     </button>
 
                     <button class="nav-btn" onclick="openCanvas()">
-                        <i class="ph-duotone ph-note-pencil" aria-hidden="true"></i>
+                        <i class="ph-fill ph-note-pencil" aria-hidden="true"></i>
                         <span>Canvas</span>
                     </button>
 
                     <button class="nav-btn" onclick="openTools()">
-                        <i class="ph-duotone ph-toolbox" aria-hidden="true"></i>
+                        <i class="ph-fill ph-toolbox" aria-hidden="true"></i>
                         <span>Fox Tools</span>
                     </button>
 
@@ -3245,7 +3244,7 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
                 <div class="sidebar-title">
                     История
                     <button class="sidebar-menu-btn" onclick="clearChatHistory()" title="Очистить историю">
-                        <i class="ph-duotone ph-trash" aria-hidden="true"></i>
+                        <i class="ph-fill ph-trash" aria-hidden="true"></i>
                     </button>
                 </div>
 
@@ -3267,7 +3266,7 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
                     </div>
 
                     <div class="sidebar-menu-btn">
-                        <i class="ph-duotone ph-caret-right" aria-hidden="true"></i>
+                        <i class="ph-fill ph-caret-right" aria-hidden="true"></i>
                     </div>
 
                 </button>
@@ -3286,7 +3285,7 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
                 <div class="top-left">
 
                     <button class="mobile-menu" onclick="toggleSidebar()">
-                        <i class="ph-duotone ph-list" aria-hidden="true"></i>
+                        <i class="ph-fill ph-list" aria-hidden="true"></i>
                     </button>
 
                     <div class="page-title" id="pageTitle">Новый чат</div>
@@ -3301,20 +3300,20 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
                 <div class="top-actions">
 
                     <button class="fox-install-btn" id="installBtn" onclick="installFoxApp()" title="Установить приложение">
-                        <i class="ph-duotone ph-download-simple" aria-hidden="true"></i>
+                        <i class="ph-fill ph-download-simple" aria-hidden="true"></i>
                         <span>Установить</span>
                     </button>
 
                     <button class="icon-btn" onclick="openCommandCenter()" title="Command Center">
-                        <i class="ph-duotone ph-command" aria-hidden="true"></i>
+                        <i class="ph-fill ph-command" aria-hidden="true"></i>
                     </button>
 
                     <button class="icon-btn" onclick="openSettings()" title="Настройки">
-                        <i class="ph-duotone ph-gear-six" aria-hidden="true"></i>
+                        <i class="ph-fill ph-gear-six" aria-hidden="true"></i>
                     </button>
 
                     <button class="icon-btn" onclick="openProfile()" title="Профиль">
-                        <i class="ph-duotone ph-user-circle" aria-hidden="true"></i>
+                        <i class="ph-fill ph-user-circle" aria-hidden="true"></i>
                     </button>
 
                 </div>
@@ -3351,7 +3350,7 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
 
                                     <button class="suggestion" onclick="quickPrompt('Придумай мне интересную идею для проекта, который я смогу сделать на Python.')">
                                         <div class="suggestion-icon">
-                                            <i class="ph-duotone ph-lightbulb" aria-hidden="true"></i>
+                                            <i class="ph-fill ph-lightbulb" aria-hidden="true"></i>
                                         </div>
 
                                         <div>
@@ -3362,7 +3361,7 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
 
                                     <button class="suggestion" onclick="quickPrompt('Помоги мне написать код и объясни его максимально понятно.')">
                                         <div class="suggestion-icon">
-                                            <i class="ph-duotone ph-code" aria-hidden="true"></i>
+                                            <i class="ph-fill ph-code" aria-hidden="true"></i>
                                         </div>
 
                                         <div>
@@ -3373,7 +3372,7 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
 
                                     <button class="suggestion" onclick="quickPrompt('Расскажи мне один действительно интересный факт и объясни, почему это так.')">
                                         <div class="suggestion-icon">
-                                            <i class="ph-duotone ph-sparkle" aria-hidden="true"></i>
+                                            <i class="ph-fill ph-sparkle" aria-hidden="true"></i>
                                         </div>
 
                                         <div>
@@ -3389,7 +3388,7 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
                     </div>
 
                     <button class="fox-scroll-bottom" id="foxScrollBottom" onclick="scrollToBottom()" title="Прокрутить вниз" aria-label="Прокрутить вниз">
-                        <i class="ph-duotone ph-arrow-down" aria-hidden="true"></i>
+                        <i class="ph-fill ph-arrow-down" aria-hidden="true"></i>
                     </button>
 
                     <div class="composer-zone">
@@ -3397,7 +3396,7 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
                         <div class="composer-wrap">
 
                             <div class="attached-file" id="attachedFile">
-                                <i class="ph-duotone ph-paperclip" aria-hidden="true" style="font-size:15px"></i>
+                                <i class="ph-fill ph-paperclip" aria-hidden="true" style="font-size:15px"></i>
 
                                 <span class="attached-file-name" id="attachedFileName"></span>
 
@@ -3411,11 +3410,11 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
                                 <div class="composer-tools">
 
                                     <button class="composer-tool" onclick="document.getElementById('fileInput').click()" title="Прикрепить файл">
-                                        <i class="ph-duotone ph-paperclip" aria-hidden="true"></i>
+                                        <i class="ph-fill ph-paperclip" aria-hidden="true"></i>
                                     </button>
 
                                     <button class="composer-tool" onclick="quickPrompt('/creative Сделай ответ более креативным и интересным.')" title="Creative">
-                                        <i class="ph-duotone ph-magic-wand" aria-hidden="true"></i>
+                                        <i class="ph-fill ph-magic-wand" aria-hidden="true"></i>
                                     </button>
 
                                 </div>
@@ -3428,7 +3427,7 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
 
                                 <button class="send-btn" id="sendBtn" onclick="sendMessage()">
 
-                                    <i class="ph-duotone ph-paper-plane-tilt" aria-hidden="true"></i>
+                                    <i class="ph-fill ph-paper-plane-tilt" aria-hidden="true"></i>
 
                                 </button>
 
@@ -3465,15 +3464,15 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
                             <div class="canvas-tools">
 
                                 <button class="icon-btn" onclick="newCanvas()" title="Новый Canvas">
-                                    <i class="ph-duotone ph-file-plus" aria-hidden="true"></i>
+                                    <i class="ph-fill ph-file-plus" aria-hidden="true"></i>
                                 </button>
 
                                 <button class="icon-btn" onclick="copyCanvas()" title="Копировать">
-                                    <i class="ph-duotone ph-copy" aria-hidden="true"></i>
+                                    <i class="ph-fill ph-copy" aria-hidden="true"></i>
                                 </button>
 
                                 <button class="icon-btn" onclick="sendCanvasToChat()" title="Отправить в чат">
-                                    <i class="ph-duotone ph-chat-teardrop-text" aria-hidden="true"></i>
+                                    <i class="ph-fill ph-chat-teardrop-text" aria-hidden="true"></i>
                                 </button>
 
                             </div>
@@ -3497,7 +3496,7 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
                         <div class="panel-title">Command Panel</div>
 
                         <button class="icon-btn" onclick="toggleRightPanel()" title="Скрыть">
-                            <i class="ph-duotone ph-caret-left" aria-hidden="true"></i>
+                            <i class="ph-fill ph-caret-left" aria-hidden="true"></i>
                         </button>
                     </div>
 
@@ -3568,7 +3567,7 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
                                 <button class="command-item" onclick="quickPrompt('Составь мне понятный план изучения программирования.')">
 
                                     <div class="command-icon">
-                                        <i class="ph-duotone ph-list-checks" aria-hidden="true"></i>
+                                        <i class="ph-fill ph-list-checks" aria-hidden="true"></i>
                                     </div>
 
                                     <div class="command-copy">
@@ -3581,7 +3580,7 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
                                 <button class="command-item" onclick="openProfile()">
 
                                     <div class="command-icon">
-                                        <i class="ph-duotone ph-user-circle" aria-hidden="true"></i>
+                                        <i class="ph-fill ph-user-circle" aria-hidden="true"></i>
                                     </div>
 
                                     <div class="command-copy">
@@ -3594,7 +3593,7 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
                                 <button class="command-item" onclick="openSettings()">
 
                                     <div class="command-icon">
-                                        <i class="ph-duotone ph-gear-six" aria-hidden="true"></i>
+                                        <i class="ph-fill ph-gear-six" aria-hidden="true"></i>
                                     </div>
 
                                     <div class="command-copy">
@@ -3752,7 +3751,7 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
                     <div>
 
                         <label class="upload-btn">
-                            <i class="ph-duotone ph-upload-simple" aria-hidden="true" style="font-size:14px"></i>
+                            <i class="ph-fill ph-upload-simple" aria-hidden="true" style="font-size:14px"></i>
 
                             Выбрать аватар
 
@@ -3963,7 +3962,7 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
                     <button class="command-item" onclick="closeModal('commandModal'); quickPrompt('Придумай необычную идею для IT-проекта.')">
 
                         <div class="command-icon">
-                            <i class="ph-duotone ph-lightbulb" aria-hidden="true"></i>
+                            <i class="ph-fill ph-lightbulb" aria-hidden="true"></i>
                         </div>
 
                         <div class="command-copy">
@@ -3976,7 +3975,7 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
                     <button class="command-item" onclick="closeModal('commandModal'); activateWorkspace('web')">
 
                         <div class="command-icon">
-                            <i class="ph-duotone ph-globe-hemisphere-west" aria-hidden="true"></i>
+                            <i class="ph-fill ph-globe-hemisphere-west" aria-hidden="true"></i>
                         </div>
 
                         <div class="command-copy">
@@ -3989,7 +3988,7 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
                     <button class="command-item" onclick="closeModal('commandModal'); openCanvas()">
 
                         <div class="command-icon">
-                            <i class="ph-duotone ph-note-pencil" aria-hidden="true"></i>
+                            <i class="ph-fill ph-note-pencil" aria-hidden="true"></i>
                         </div>
 
                         <div class="command-copy">
@@ -4002,7 +4001,7 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
                     <button class="command-item" onclick="closeModal('commandModal'); openSettings()">
 
                         <div class="command-icon">
-                            <i class="ph-duotone ph-gear-six" aria-hidden="true"></i>
+                            <i class="ph-fill ph-gear-six" aria-hidden="true"></i>
                         </div>
 
                         <div class="command-copy">
@@ -4047,7 +4046,7 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
                     <button class="command-item" onclick="useTool('explain')">
 
                         <div class="command-icon">
-                            <i class="ph-duotone ph-chalkboard-teacher" aria-hidden="true"></i>
+                            <i class="ph-fill ph-chalkboard-teacher" aria-hidden="true"></i>
                         </div>
 
                         <div class="command-copy">
@@ -4060,7 +4059,7 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
                     <button class="command-item" onclick="useTool('code')">
 
                         <div class="command-icon">
-                            <i class="ph-duotone ph-code" aria-hidden="true"></i>
+                            <i class="ph-fill ph-code" aria-hidden="true"></i>
                         </div>
 
                         <div class="command-copy">
@@ -4073,7 +4072,7 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
                     <button class="command-item" onclick="useTool('idea')">
 
                         <div class="command-icon">
-                            <i class="ph-duotone ph-lightbulb-filament" aria-hidden="true"></i>
+                            <i class="ph-fill ph-lightbulb-filament" aria-hidden="true"></i>
                         </div>
 
                         <div class="command-copy">
@@ -4208,15 +4207,15 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
         function icon(type) {
             const icons = {
                 copy: `
-                    <i class="ph-duotone ph-copy" aria-hidden="true"></i>
+                    <i class="ph-fill ph-copy" aria-hidden="true"></i>
                 `,
 
                 regenerate: `
-                    <i class="ph-duotone ph-arrows-clockwise" aria-hidden="true"></i>
+                    <i class="ph-fill ph-arrows-clockwise" aria-hidden="true"></i>
                 `,
 
                 trash: `
-                    <i class="ph-duotone ph-trash" aria-hidden="true"></i>
+                    <i class="ph-fill ph-trash" aria-hidden="true"></i>
                 `
             };
 
@@ -4613,7 +4612,7 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
                         : "");
 
                 item.innerHTML = `
-                    <i class="ph-duotone ph-chat-circle-text" aria-hidden="true" style="font-size:15px"></i>
+                    <i class="ph-fill ph-chat-circle-text" aria-hidden="true" style="font-size:15px"></i>
 
                     <span class="chat-item-title">
                         ${escapeHtml(chat.title)}
@@ -4697,7 +4696,7 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
                         <button class="suggestion" onclick="quickPrompt('Придумай мне интересную идею для проекта, который я смогу сделать на Python.')">
 
                             <div class="suggestion-icon">
-                                <i class="ph-duotone ph-lightbulb" aria-hidden="true"></i>
+                                <i class="ph-fill ph-lightbulb" aria-hidden="true"></i>
                             </div>
 
                             <div>
@@ -4710,7 +4709,7 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
                         <button class="suggestion" onclick="quickPrompt('Помоги мне написать код и объясни его максимально понятно.')">
 
                             <div class="suggestion-icon">
-                                <i class="ph-duotone ph-code" aria-hidden="true"></i>
+                                <i class="ph-fill ph-code" aria-hidden="true"></i>
                             </div>
 
                             <div>
@@ -4723,7 +4722,7 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
                         <button class="suggestion" onclick="quickPrompt('Расскажи мне один действительно интересный факт и объясни, почему это так.')">
 
                             <div class="suggestion-icon">
-                                <i class="ph-duotone ph-sparkle" aria-hidden="true"></i>
+                                <i class="ph-fill ph-sparkle" aria-hidden="true"></i>
                             </div>
 
                             <div>
@@ -4880,7 +4879,7 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
                         <svg class="fox-mark" viewBox="0 0 24 24" aria-hidden="true"><path class="fox-head" fill="currentColor" d="M2.6 2.4 8.4 7.3h7.2l5.8-4.9-.5 9.3L12 21.8l-8.9-10.1Z"/><path fill="#000" fill-opacity=".22" d="M4.7 5.4l2.5 2.3-2.2 1.9zM19.3 5.4l-2.5 2.3 2.2 1.9z"/><path fill="#000" fill-opacity=".1" d="M8.4 7.3h7.2l5.3 4.4-6.5 2.9L12 16.4l-2.4-1.8-6.5-2.9z"/><g class="fox-eyes" fill="#2b1406"><path d="M7.3 11.5c1.1-.8 2.3-.7 3.1.4-1.1.6-2.2.5-3.1-.4Z"/><path d="M16.7 11.5c-1.1-.8-2.3-.7-3.1.4 1.1.6 2.2.5 3.1-.4Z"/></g><path fill="#2b1406" d="M10.7 18.7h2.6L12 20.3z"/></svg>
                     `
                     : `
-                        <i class="ph-duotone ph-user" aria-hidden="true"></i>
+                        <i class="ph-fill ph-user" aria-hidden="true"></i>
                     `;
 
             const bubbleContent =
@@ -5914,7 +5913,7 @@ body.light .message.assistant .bubble{background:linear-gradient(160deg,rgba(var
                                     ${escapeHtml(theme.name)}
                                 </span>
 
-                                <span class="theme-check"><i class="ph-duotone ph-check"></i></span>
+                                <span class="theme-check"><i class="ph-fill ph-check"></i></span>
 
                             </div>
                         `;
@@ -6535,7 +6534,7 @@ function closeSidebar(){
                 const g = foxGreetingText();
                 el.innerHTML = "";
                 const icon = document.createElement("i");
-                icon.className = "ph-duotone " + g.icon;
+                icon.className = "ph-fill " + g.icon;
                 const text = document.createElement("span");
                 text.textContent = g.text;
                 const clock = document.createElement("span");
@@ -6606,5 +6605,6 @@ function closeSidebar(){
 
     </script>
 
+<script src="/fox-extra.js"></script>
 </body>
 </html>
