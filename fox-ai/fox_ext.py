@@ -372,13 +372,17 @@ def quick_completion(prompt_text, max_tokens=200):
     models = [m["id"] for m in S["available_models"]()]
     order = models[1:] + models[:1]  # сначала «быстрая»
     for mid in order:
-        payload = {"model": mid, "max_tokens": max_tokens, "messages": [{"role": "user", "content": prompt_text}]}
-        payload["stream"] = False
+        payload = {"model": mid, "max_tokens": max_tokens, "stream": False,
+                   "messages": [{"role": "user", "content": prompt_text}]}
+        if "gpt-oss" in mid:
+            payload["reasoning_effort"] = "low"  # иначе модель тратит все токены на «размышления»
         try:
             resp = _open(S["OPENAI_BASE_URL"], S["OPENAI_API_KEY"], payload)
             data = json.loads(resp.read().decode("utf-8"))
             resp.close()
-            return (data["choices"][0]["message"]["content"] or "").strip()
+            text = (data["choices"][0]["message"].get("content") or "").strip().strip('"')
+            if text:
+                return text
         except Exception:  # noqa: BLE001
             continue
     return ""
@@ -393,7 +397,7 @@ def image_prompt():
         return S["rate_limit_response"]()
     en = quick_completion(
         "Turn this request into one detailed English prompt for an image generator "
-        "(subject, style, lighting, composition). Reply with the prompt only, no quotes:\n\n" + text, 160)
+        "(subject, style, lighting, composition). Reply with the prompt only, no quotes:\n\n" + text, 700)
     en = (en or text).replace("\n", " ").strip()[:400]
     seed = secrets.randbelow(10_000_000)
     stat("images")
