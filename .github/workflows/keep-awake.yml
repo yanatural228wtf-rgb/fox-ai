@@ -1,0 +1,15 @@
+# Будит сайт на Render каждые 10 минут, чтобы бесплатный сервер не засыпал.
+name: keep-awake
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Ping Fox AI
+        run: curl -fsS --max-time 90 --retry 2 https://fox-ai-sr3b.onrender.com/api/health
