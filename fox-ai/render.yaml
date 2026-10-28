@@ -1,0 +1,25 @@
+# Render Blueprint: New → Blueprint → выбери этот репозиторий.
+# Секреты (ключ API) Render спросит при создании — в репозиторий их не клади.
+services:
+  - type: web
+    name: fox-ai
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn server:app --bind 0.0.0.0:$PORT --workers 1 --threads 8 --timeout 150
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.7"
+      - key: OPENAI_BASE_URL
+        value: https://api.groq.com/openai/v1
+      - key: OPENAI_MODEL
+        value: openai/gpt-oss-120b
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: RATE_PER_MIN
+        value: "10"
+      - key: RATE_PER_DAY
+        value: "150"
+      - key: ACCESS_PASSWORD
+        sync: false

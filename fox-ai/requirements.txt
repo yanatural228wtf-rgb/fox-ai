@@ -1,0 +1,8 @@
+flask>=3.0
+python-dotenv>=1.0
+# продакшен-сервер для хостинга (Render, Hugging Face, VPS)
+gunicorn>=22.0
+# веб-поиск для бесплатных провайдеров (DuckDuckGo, без ключа)
+ddgs
+# нужен только если используешь Claude (ANTHROPIC_API_KEY)
+anthropic>=0.40
