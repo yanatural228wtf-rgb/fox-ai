@@ -850,6 +850,12 @@ def too_large(_):
     return jsonify({"error": "Слишком большой запрос. Файл — до 2 МБ, картинки — поменьше."}), 413
 
 
+# Расширения: запасной ИИ, характер и память, картинки, синхронизация, статистика
+import fox_ext  # noqa: E402
+
+fox_ext.register(globals())
+
+
 if __name__ == "__main__":
     mode = "ДЕМО (провайдер не настроен)" if PROVIDER == "demo" else f"{PROVIDER}, модель {MODEL}"
     print(f"Fox AI: http://localhost:{PORT}  —  {mode}")

@@ -6,3 +6,5 @@ gunicorn>=22.0
 ddgs
 # нужен только если используешь Claude (ANTHROPIC_API_KEY)
 anthropic>=0.40
+# синхронизация и статистика (если задан DATABASE_URL)
+psycopg[binary]>=3.1
