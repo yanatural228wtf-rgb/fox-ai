@@ -358,7 +358,7 @@ def ask_openai_compatible(messages, system):
         if exc.code in (401, 403):
             raise ProviderError(
                 "Провайдер отклонил запрос: неверный ключ или сервис недоступен "
-                "в твоём регионе. Проверь OPENAI_API_KEY."
+                f"в твоём регионе. Проверь OPENAI_API_KEY. ({exc.code}: {body[:200]})"
             ) from exc
         if exc.code == 429:
             raise ProviderError(
