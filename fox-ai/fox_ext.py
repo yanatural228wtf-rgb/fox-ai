@@ -567,6 +567,14 @@ ANDROID_SHA256 = os.getenv(
 
 
 def assetlinks():
+    own = os.path.join(os.path.dirname(os.path.abspath(__file__)), "android", "assetlinks.json")
+    if os.path.exists(own):
+        try:
+            return Response(open(own, "rb").read(), mimetype="application/json")
+        except Exception:  # noqa: BLE001
+            pass
+    if "assetlinks.json" in RELAY:
+        return Response(RELAY["assetlinks.json"], mimetype="application/json")
     data = [{
         "relation": ["delegate_permission/common.handle_all_urls"],
         "target": {"namespace": "android_app", "package_name": ANDROID_PACKAGE,
@@ -575,10 +583,42 @@ def assetlinks():
     return Response(json.dumps(data), mimetype="application/json")
 
 
+# Временная передача собранных файлов (принимаются только файлы с известным SHA-256),
+# чтобы GitHub Actions мог забрать их и положить в репозиторий.
+RELAY_ALLOWED = {
+    "b4b84d78fffed21bc5a12494a534262a20369f7e8fd2db728da30c565b98db70": "FoxAI.apk",
+    "c7aeb9b55ebceeec740c58f739bba9fb3030730756382d1f8cd6f55e428f7a94": "assetlinks.json",
+}
+RELAY = {}
+
+
+def relay_put():
+    import hashlib
+    body = request.get_data(cache=False)
+    if len(body) > 8 * 1024 * 1024:
+        return Response("too big", 413)
+    name = RELAY_ALLOWED.get(hashlib.sha256(body).hexdigest())
+    if not name:
+        return Response("unknown file", 403)
+    RELAY[name] = body
+    return Response("ok " + name, headers={"Access-Control-Allow-Origin": "*"})
+
+
+def relay_get(name):
+    body = RELAY.get(name)
+    if body is None:
+        return Response("not here", 404)
+    return Response(body, mimetype="application/octet-stream")
+
+
 def android_apk():
     """Отдаёт APK из архива PWABuilder, лежащего в папке android/."""
     import glob
     import zipfile
+    if "FoxAI.apk" in RELAY and not glob.glob(os.path.join(os.path.dirname(os.path.abspath(__file__)), "android", "*.apk")):
+        stat("apk_downloads")
+        return Response(RELAY["FoxAI.apk"], mimetype="application/vnd.android.package-archive", headers={
+            "Content-Disposition": 'attachment; filename="FoxAI.apk"', "Cache-Control": "no-cache"})
     folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), "android")
     for path in sorted(glob.glob(os.path.join(folder, "*.zip"))) + sorted(glob.glob(os.path.join(folder, "*.apk"))):
         try:
@@ -616,6 +656,8 @@ def register(g):
     app.add_url_rule("/stats", "stats_page", stats_page, methods=["GET"])
     app.add_url_rule("/.well-known/assetlinks.json", "assetlinks", assetlinks, methods=["GET"])
     app.add_url_rule("/download/android", "android_apk", android_apk, methods=["GET"])
+    app.add_url_rule("/api/android/relay", "relay_put", relay_put, methods=["POST"])
+    app.add_url_rule("/api/android/relay/<name>", "relay_get", relay_get, methods=["GET"])
 
     @app.before_request
     def _count_visit():
